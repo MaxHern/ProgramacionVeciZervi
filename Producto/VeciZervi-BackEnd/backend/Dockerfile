@@ -4,7 +4,7 @@ COPY . /app
 WORKDIR /app
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Levantar el servidor Java
+# Etapa 2: Levanta el servidor Java
 FROM eclipse-temurin:17-jre
 COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8080
