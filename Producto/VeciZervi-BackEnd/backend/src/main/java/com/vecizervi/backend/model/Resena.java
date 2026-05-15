@@ -1,0 +1,49 @@
+package com.vecizervi.backend.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "resenas")
+public class Resena {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_resena")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_trabajo", nullable = false)
+    private Trabajo trabajo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_emisor", nullable = false)
+    private Usuario emisor;
+
+    @ManyToOne
+    @JoinColumn(name = "id_receptor", nullable = false)
+    private Usuario receptor;
+
+    @Column(nullable = false)
+    private Integer estrellas;
+
+    @Column(columnDefinition = "TEXT")
+    private String comentario;
+
+    @Column(name = "url_foto_evidencia")
+    private String urlFotoEvidencia;
+
+    public Resena() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Trabajo getTrabajo() { return trabajo; }
+    public void setTrabajo(Trabajo trabajo) { this.trabajo = trabajo; }
+    public Usuario getEmisor() { return emisor; }
+    public void setEmisor(Usuario emisor) { this.emisor = emisor; }
+    public Usuario getReceptor() { return receptor; }
+    public void setReceptor(Usuario receptor) { this.receptor = receptor; }
+    public Integer getEstrellas() { return estrellas; }
+    public void setEstrellas(Integer estrellas) { this.estrellas = estrellas; }
+    public String getComentario() { return comentario; }
+    public void setComentario(String comentario) { this.comentario = comentario; }
+}

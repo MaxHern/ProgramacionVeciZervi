@@ -1,5 +1,6 @@
 package com.vecizervi.backend.controller;
 
+import com.vecizervi.backend.model.EstadoTrabajo;
 import com.vecizervi.backend.model.Trabajo;
 import com.vecizervi.backend.repository.TrabajoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class TrabajoController {
         
         if (trabajoOpt.isPresent()) {
             Trabajo trabajo = trabajoOpt.get();
-            trabajo.setEstado("ASIGNADO");
+            trabajo.setEstado(EstadoTrabajo.Asignado);
             trabajoRepository.save(trabajo);
             return ResponseEntity.ok("El trabajo ha sido marcado como Asignado. Ya no aparecerá en la lista.");
         }
@@ -56,15 +57,20 @@ public class TrabajoController {
     // Scrum 7: Marcar trabajo como "Finalizado"
     @PutMapping("/{id}/finalizar")
     public ResponseEntity<?> marcarComoFinalizado(@PathVariable Long id) {
-        Optional<Trabajo> trabajoOpt = trabajoRepository.findById(id);
+    Optional<Trabajo> trabajoOpt = trabajoRepository.findById(id);
+
+    if (trabajoOpt.isPresent()) {
+        Trabajo trabajo = trabajoOpt.get();
         
-        if (trabajoOpt.isPresent()) {
-            Trabajo trabajo = trabajoOpt.get();
-            trabajo.setEstado("FINALIZADO");
-            trabajo.setFechaFinalizacion(LocalDateTime.now());
-            trabajoRepository.save(trabajo);
-            return ResponseEntity.ok("Trabajo finalizado con éxito a las " + trabajo.getFechaFinalizacion());
-        }
-        return ResponseEntity.notFound().build();
+        // Cambio 1: Usar el Enum en lugar de String
+        trabajo.setEstado(EstadoTrabajo.Finalizado);
+        
+        // Cambio 2: Asegúrate de tener el campo en el modelo o borra esta línea
+        trabajo.setFechaFinalizacion(LocalDateTime.now());
+        
+        trabajoRepository.save(trabajo);
+        return ResponseEntity.ok("Trabajo finalizado con éxito a las " + trabajo.getFechaFinalizacion());
     }
+    return ResponseEntity.notFound().build();
+}
 }
