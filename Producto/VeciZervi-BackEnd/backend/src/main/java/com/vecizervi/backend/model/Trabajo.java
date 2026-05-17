@@ -37,6 +37,9 @@ public class Trabajo {
     @Column
     private Double longitud;
 
+    @Column
+    private String comuna;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoTrabajo estado = EstadoTrabajo.Disponible;
@@ -118,5 +121,13 @@ public class Trabajo {
 
     public void setFechaFinalizacion(LocalDateTime fechaFinalizacion) {
         this.fechaFinalizacion = fechaFinalizacion;
+    }
+
+    public String getComuna() {
+        return comuna;
+    }
+
+    public void setComuna(String comuna) {
+        this.comuna = comuna;
     }
 }
