@@ -1,7 +1,13 @@
 Links de los archivos de Documentacion para trabajarlos
 
-Informe - documento Word
+Documento de Registro - documento Word
 https://docs.google.com/document/d/1xuUo3LrvRuv-rNYeTFXUVLsBvcZ5uJRq/edit?usp=sharing&ouid=100545846972666373241&rtpof=true&sd=true
+
+Informe - documento Word
+https://docs.google.com/document/d/1613Hx84b1Kj8bima_GsvhKDl4JF3HafxW50A1YjzHvA/edit?usp=sharing
+
+Sprint Review 1 - documento Word
+https://docs.google.com/document/d/1I8Vr1vJc9xKmKdfs-PwoQbeDy5JGuRR1gdFxPis0T8c/edit?usp=sharing
 
 BackLogs - Jira
 https://duocuc-team-vecizervi.atlassian.net?continue=https%3A%2F%2Fduocuc-team-vecizervi.atlassian.net%2Fwelcome%2Fsoftware&atlOrigin=eyJpIjoiZjM0ZTRjY2I3ZDlhNDI4MzkwYWE2ODgzMDVhMDk4NzkiLCJwIjoiaiJ9
