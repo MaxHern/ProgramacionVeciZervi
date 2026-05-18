@@ -37,7 +37,7 @@ public class UsuarioController {
 
         if (usuarioDB.getCuentaBloqueadaHasta() != null) {
             if (LocalDateTime.now().isBefore(usuarioDB.getCuentaBloqueadaHasta()))
-                return ResponseEntity.status(403).body("Cuenta bloqueada por múltiples intentos fallidos. Intenta en 15 minutos.");
+                return ResponseEntity.status(403).body("Cuenta bloqueada. Intenta en 15 minutos.");
             else {
                 usuarioDB.setIntentosFallidos(0);
                 usuarioDB.setCuentaBloqueadaHasta(null);
@@ -50,7 +50,7 @@ public class UsuarioController {
             if (usuarioDB.getIntentosFallidos() >= 5) {
                 usuarioDB.setCuentaBloqueadaHasta(LocalDateTime.now().plusMinutes(15));
                 usuarioRepository.save(usuarioDB);
-                return ResponseEntity.status(403).body("Has fallado 5 veces. Cuenta bloqueada por 15 minutos.");
+                return ResponseEntity.status(403).body("Cuenta bloqueada por 15 minutos.");
             }
             usuarioRepository.save(usuarioDB);
             return ResponseEntity.status(401).body("Contraseña incorrecta. Intento " + usuarioDB.getIntentosFallidos() + " de 5.");
@@ -62,6 +62,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDB);
     }
 
+    // ← UN SOLO @GetMapping sin ruta
     @GetMapping
     public List<Usuario> getTodosLosUsuarios() {
         return usuarioRepository.findAll();
@@ -147,14 +148,8 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Mínimo 8 caracteres.");
 
         usuario.setContrasenaEnCriptada(nuevaClave);
-        usuario.setTokenRecuperacion(null); // invalida el token usado
-        usuarioRepository.save(usuario);   // guarda en la BD
+        usuario.setTokenRecuperacion(null);
+        usuarioRepository.save(usuario);
         return ResponseEntity.ok("Contraseña actualizada correctamente.");
     }
-
-    @GetMapping
-    public ResponseEntity<?> getTodosUsuarios() {
-        return ResponseEntity.ok(usuarioRepository.findAll());
-    }
-
 }
