@@ -17,3 +17,6 @@ https://docs.google.com/spreadsheets/d/1ERwhbikosku0dHx_tqMpsfLgn7uDoDs-CA9G4PUQ
 
 Mockups - Miro 
 https://miro.com/welcomeonboard/LzlZbUVVbVd2Z2FVemV3MUUya2lIU3hFOVdmSXBvakhGSXRxZnJoU3B6Y2VQTHN1d1pRSGdiVFZmWUJtQ3kvM0VvRnowZGZWZFRTNTBjUzJYSG4wVVp2TUYxS1RuOHpQWDBOdFRxZjkyQk1kZzVwTm5ZVlE1VUFzREFxd3V6K2dBS2NFMDFkcUNFSnM0d3FEN050ekl3PT0hdjE=?share_link_id=640548375670
+
+Daily Meeting - Exel
+https://docs.google.com/spreadsheets/d/1n0M_8f-sLrUhiYTngQu7RKuVqBaZ_17LAqeygFYwC_U/edit?usp=sharing
