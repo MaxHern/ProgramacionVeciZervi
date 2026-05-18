@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 @Data
 @Entity
 @Table(name = "usuarios")
@@ -26,7 +27,8 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String correo;
 
-   @JsonProperty("password")
+    @JsonProperty("password")
+    @Column(name = "password", nullable = false)
     private String contrasenaEnCriptada; 
 
     private Integer intentosFallidos = 0; 
