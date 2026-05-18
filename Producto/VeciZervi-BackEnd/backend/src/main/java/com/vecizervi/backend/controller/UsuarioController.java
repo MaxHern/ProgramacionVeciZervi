@@ -28,7 +28,7 @@ public class UsuarioController {
         }
         // Guardar el usuario real en la base de datos de MySQL
         usuarioRepository.save(nuevoUsuario);
-        return ResponseEntity.ok("Usuario registrado y validado con éxito.");
+        return ResponseEntity.ok(nuevoUsuario);
     }
 
     @PostMapping("/login")
@@ -70,7 +70,7 @@ public class UsuarioController {
         usuarioDB.setCuentaBloqueadaHasta(null);
         usuarioRepository.save(usuarioDB);
 
-        return ResponseEntity.ok("jwt_token_simulado_12345");
+        return ResponseEntity.ok(usuarioDB);
     }
 
     @PutMapping("/{id}/perfil")
