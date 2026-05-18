@@ -151,4 +151,10 @@ public class UsuarioController {
         usuarioRepository.save(usuario);   // guarda en la BD
         return ResponseEntity.ok("Contraseña actualizada correctamente.");
     }
+
+    @GetMapping
+    public ResponseEntity<?> getTodosUsuarios() {
+        return ResponseEntity.ok(usuarioRepository.findAll());
+    }
+
 }

@@ -10,11 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
-    
+
     @JsonProperty("idUsuario")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario") 
+    @Column(name = "id_usuario")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -29,9 +29,13 @@ public class Usuario {
 
     @JsonProperty("password")
     @Column(name = "password")
-    private String contrasenaEnCriptada; 
+    private String contrasenaEnCriptada;
 
-    private Integer intentosFallidos = 0; 
-    private LocalDateTime cuentaBloqueadaHasta; 
+    private Integer intentosFallidos = 0;
+    private LocalDateTime cuentaBloqueadaHasta;
     private String tokenRecuperacion;
+
+    // ← CAMPO NUEVO
+    @Column(name = "rol")
+    private String rol = "USER";
 }
