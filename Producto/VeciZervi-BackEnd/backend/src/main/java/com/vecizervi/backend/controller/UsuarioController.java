@@ -80,7 +80,7 @@ public class UsuarioController {
             usuario.setApellidos(datosNuevos.getApellidos());
             // No permitimos que cambien el RUT ni el Correo por seguridad
             usuarioRepository.save(usuario);
-            return ResponseEntity.ok("Perfil actualizado correctamente");
+            return ResponseEntity.ok(usuario);
         }).orElse(ResponseEntity.notFound().build());
     }
 

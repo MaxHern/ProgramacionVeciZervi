@@ -30,7 +30,7 @@ public class TrabajoController {
         }
 
         trabajoRepository.save(nuevoTrabajo);
-        return ResponseEntity.ok("¡Tu trabajo ha sido publicado exitosamente!");
+        return ResponseEntity.ok(nuevoTrabajo);
     }
 
     // Scrum 5: Ver lista de trabajos disponibles
