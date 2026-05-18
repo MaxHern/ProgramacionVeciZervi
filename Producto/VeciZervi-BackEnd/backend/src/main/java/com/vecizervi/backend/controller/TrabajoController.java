@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +30,8 @@ public class TrabajoController {
 
     @PostMapping("/publicar")
     public ResponseEntity<?> publicarTrabajo(@RequestBody Trabajo nuevoTrabajo,
-                                              @RequestParam Long idCliente,
-                                              @RequestParam Long idCategoria) {
+                                             @RequestParam Long idCliente,
+                                             @RequestParam Long idCategoria) {
 
         if (nuevoTrabajo.getPrecio() == null || nuevoTrabajo.getPrecio() <= 0) {
             return ResponseEntity.badRequest().body("El precio debe ser un número mayor a 0.");
@@ -84,5 +83,17 @@ public class TrabajoController {
             return ResponseEntity.ok("Trabajo finalizado con éxito a las " + trabajo.getFechaFinalizacion());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping
+    public List<Trabajo> getTodosLosTrabajos() {
+        return trabajoRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Trabajo> getTrabajoPorId(@PathVariable Long id) {
+        return trabajoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
