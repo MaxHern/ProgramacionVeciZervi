@@ -31,7 +31,7 @@ public class TrabajoController {
         if (nuevoTrabajo.getTitulo() == null || nuevoTrabajo.getTitulo().length() < 5)
             return ResponseEntity.badRequest().body("El título debe ser más descriptivo.");
 
-        Usuario  cliente   = usuarioRepository.findById(idCliente).orElse(null);
+        Usuario cliente     = usuarioRepository.findById(idCliente).orElse(null);
         Categoria categoria = categoriaRepository.findById(idCategoria).orElse(null);
 
         if (cliente   == null) return ResponseEntity.badRequest().body("Cliente no encontrado.");
@@ -53,8 +53,30 @@ public class TrabajoController {
     public ResponseEntity<?> getTrabajosPorCliente(@PathVariable Long idCliente) {
         Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
         if (cliente == null) return ResponseEntity.notFound().build();
-        List<Trabajo> trabajos = trabajoRepository.findByCliente(cliente);
-        return ResponseEntity.ok(trabajos);
+        return ResponseEntity.ok(trabajoRepository.findByCliente(cliente));
+    }
+
+    @GetMapping
+    public List<Trabajo> getTodosLosTrabajos() {
+        return trabajoRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Trabajo> getTrabajoPorId(@PathVariable Long id) {
+        return trabajoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/editar")
+    public ResponseEntity<?> editarTrabajo(@PathVariable Long id, @RequestBody Trabajo datosNuevos) {
+        return trabajoRepository.findById(id).map(t -> {
+            t.setTitulo(datosNuevos.getTitulo());
+            t.setDescripcion(datosNuevos.getDescripcion());
+            t.setPrecio(datosNuevos.getPrecio());
+            t.setComuna(datosNuevos.getComuna());
+            return ResponseEntity.ok(trabajoRepository.save(t));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}/asignar")
@@ -80,17 +102,5 @@ public class TrabajoController {
             return ResponseEntity.notFound().build();
         trabajoRepository.deleteById(id);
         return ResponseEntity.ok("Trabajo eliminado correctamente.");
-    }
-
-    @GetMapping
-    public List<Trabajo> getTodosLosTrabajos() {
-        return trabajoRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Trabajo> getTrabajoPorId(@PathVariable Long id) {
-        return trabajoRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 }
