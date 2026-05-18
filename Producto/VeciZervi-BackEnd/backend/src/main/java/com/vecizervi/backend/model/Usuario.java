@@ -5,13 +5,13 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 
 @Data
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
     
+    @JsonProperty("idUsuario")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario") 
