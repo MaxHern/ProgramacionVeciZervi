@@ -13,76 +13,73 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/trabajos")
 public class TrabajoController {
 
-    @Autowired
-    private TrabajoRepository trabajoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    @Autowired private TrabajoRepository trabajoRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private CategoriaRepository categoriaRepository;
 
     @PostMapping("/publicar")
     public ResponseEntity<?> publicarTrabajo(@RequestBody Trabajo nuevoTrabajo,
                                              @RequestParam Long idCliente,
                                              @RequestParam Long idCategoria) {
-
-        if (nuevoTrabajo.getPrecio() == null || nuevoTrabajo.getPrecio() <= 0) {
+        if (nuevoTrabajo.getPrecio() == null || nuevoTrabajo.getPrecio() <= 0)
             return ResponseEntity.badRequest().body("El precio debe ser un número mayor a 0.");
-        }
-        if (nuevoTrabajo.getTitulo() == null || nuevoTrabajo.getTitulo().length() < 5) {
+        if (nuevoTrabajo.getTitulo() == null || nuevoTrabajo.getTitulo().length() < 5)
             return ResponseEntity.badRequest().body("El título debe ser más descriptivo.");
-        }
 
-        Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
+        Usuario  cliente   = usuarioRepository.findById(idCliente).orElse(null);
         Categoria categoria = categoriaRepository.findById(idCategoria).orElse(null);
 
-        if (cliente == null) return ResponseEntity.badRequest().body("Cliente no encontrado.");
+        if (cliente   == null) return ResponseEntity.badRequest().body("Cliente no encontrado.");
         if (categoria == null) return ResponseEntity.badRequest().body("Categoría no encontrada.");
 
         nuevoTrabajo.setCliente(cliente);
         nuevoTrabajo.setCategoria(categoria);
         nuevoTrabajo.setEstado(EstadoTrabajo.Disponible);
 
-        trabajoRepository.save(nuevoTrabajo);
-        return ResponseEntity.ok(nuevoTrabajo);
+        return ResponseEntity.ok(trabajoRepository.save(nuevoTrabajo));
     }
 
     @GetMapping("/disponibles")
     public ResponseEntity<List<Trabajo>> listarTrabajosDisponibles() {
-        List<Trabajo> disponibles = trabajoRepository.findByEstado(EstadoTrabajo.Disponible);
-        return ResponseEntity.ok(disponibles);
+        return ResponseEntity.ok(trabajoRepository.findByEstado(EstadoTrabajo.Disponible));
+    }
+
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<?> getTrabajosPorCliente(@PathVariable Long idCliente) {
+        Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
+        if (cliente == null) return ResponseEntity.notFound().build();
+        List<Trabajo> trabajos = trabajoRepository.findByCliente(cliente);
+        return ResponseEntity.ok(trabajos);
     }
 
     @PutMapping("/{id}/asignar")
     public ResponseEntity<?> marcarComoAsignado(@PathVariable Long id) {
-        Optional<Trabajo> trabajoOpt = trabajoRepository.findById(id);
-        if (trabajoOpt.isPresent()) {
-            Trabajo trabajo = trabajoOpt.get();
-            trabajo.setEstado(EstadoTrabajo.Asignado);
-            trabajoRepository.save(trabajo);
-            return ResponseEntity.ok("El trabajo ha sido marcado como Asignado.");
-        }
-        return ResponseEntity.notFound().build();
+        return trabajoRepository.findById(id).map(t -> {
+            t.setEstado(EstadoTrabajo.Asignado);
+            return ResponseEntity.ok(trabajoRepository.save(t));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}/finalizar")
     public ResponseEntity<?> marcarComoFinalizado(@PathVariable Long id) {
-        Optional<Trabajo> trabajoOpt = trabajoRepository.findById(id);
-        if (trabajoOpt.isPresent()) {
-            Trabajo trabajo = trabajoOpt.get();
-            trabajo.setEstado(EstadoTrabajo.Finalizado);
-            trabajo.setFechaFinalizacion(LocalDateTime.now());
-            trabajoRepository.save(trabajo);
-            return ResponseEntity.ok("Trabajo finalizado con éxito a las " + trabajo.getFechaFinalizacion());
-        }
-        return ResponseEntity.notFound().build();
+        return trabajoRepository.findById(id).map(t -> {
+            t.setEstado(EstadoTrabajo.Finalizado);
+            t.setFechaFinalizacion(LocalDateTime.now());
+            return ResponseEntity.ok(trabajoRepository.save(t));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarTrabajo(@PathVariable Long id) {
+        if (!trabajoRepository.existsById(id))
+            return ResponseEntity.notFound().build();
+        trabajoRepository.deleteById(id);
+        return ResponseEntity.ok("Trabajo eliminado correctamente.");
     }
 
     @GetMapping
