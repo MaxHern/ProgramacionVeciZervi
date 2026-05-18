@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import jakarta.persistence.Column;
 
 @Data
 @Entity
@@ -28,7 +28,7 @@ public class Usuario {
     private String correo;
 
     @JsonProperty("password")
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String contrasenaEnCriptada; 
 
     private Integer intentosFallidos = 0; 
